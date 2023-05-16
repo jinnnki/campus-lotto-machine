@@ -7,42 +7,38 @@ import java.io.InputStreamReader;
 import java.util.Random;
 import java.util.TreeSet;
 
+import com.multicampus.lottomachine.controller.LottoMachineController;
+import com.multicampus.lottomachine.exception.DuplicationNubersException;
+import com.multicampus.lottomachine.exception.NumberOutOfBoundException;
+
+/** 로또머신 프로그램 */
 public class AppService {
-	
-	public BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-	public TreeSet<Integer> customerNumber = new TreeSet<Integer>();
-	public TreeSet<Integer> winNumber = new TreeSet<Integer>();
-	public TreeSet<Integer> resultNmeber = new TreeSet<Integer>();
-	
-	/**로또 머신 프로그램 시작 */
-	public void start(){
-		
-		//TODO 1. 숫자를 6개 받는다 - TreeSet에 저장	
-		while(customerNumber.size()<6) {
+	private BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	private LottoMachineController lottoController = new LottoMachineController();
+	private String input; // 사용자 값을 입력 받는 변수
+
+	/**
+	 * 로또 머신 프로그램 시작 1. 프로그램은 사용자가 종료할 때까지 계속 진행된다. - 종료Q를 누르면 프로그램 종료 - 6개의 번호 입력,
+	 * 번호는 1~45까지 가능
+	 */
+	public void start() {
+		while (true) {
 			try {
-				customerNumber.add(Integer.parseInt(br.readLine()));
-			}catch(IOException e) {
-				e.printStackTrace();
+				lottoController.showProgramMenu();
+				input = br.readLine(); /** 사용자 입력받기, 6개를 한꺼번에 받는다. */
+				lottoController.showResultLottoWinning(input); /** 로또 프로그램에 사용자 값을 전달 */
+			} catch (NumberOutOfBoundException e) { /** 1~45를 넘겼을 때 에러 */
+				System.out.println(e.getMessage());
+			} catch (NumberFormatException e) { /** 숫자가 아닌 값을 입력 */
+				System.out.println(e.getMessage());
+			} catch (DuplicationNubersException e) { /** 중복된 값을 넣었을 때 에러 */
+				System.out.println(e.getMessage());
+			} catch (NullPointerException e) { /** 사용자값이 Null인데 get요청 했을 때 에러 */
+				System.out.println(e.getMessage());
+			} catch (IOException e) {
+				System.out.println(e.getMessage());
 			}
 		}
-		
-		System.out.println("사용자 입력번호 : "+customerNumber);
-		//TODO 2. 난수를 생성한다 - Random 사용, 역시 TreeSet에 저장
-		//겹치면 안된다.. 이 부분 수정필요
-		Random rd = new Random();
-		for(int i=0;i<6;i++) {
-			winNumber.add(rd.nextInt(45)+1);
-		}
-		
-		System.out.println("로또 번호 : "+winNumber);
-		//TODO 3. 몇개가 당첨되었는지 확인
-		for(Integer number:customerNumber) {
-			if(winNumber.contains(number)) {
-				resultNmeber.add(number);
-			}
-		}
-		
-		System.out.println("당첨번호 : "+resultNmeber);
-		System.out.println("프로그램 종료");
+
 	}
 }
