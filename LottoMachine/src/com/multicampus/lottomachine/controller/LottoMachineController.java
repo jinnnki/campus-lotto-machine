@@ -16,7 +16,11 @@ public class LottoMachineController {
 //		lottoView.showCustomerSetting(lottoService.getCustomerNumbers()); //TreeSet값이 들어가야함
 		
 //		//당첨번호를 생성하고, 사용자 입력값이랑 비교, 결과 보여주기
-//		lottoService.checkLottoNumber();
+		lottoService.checkLottoNumber();
 //		lottoView.showWinningResult(lottoService.getWinningResult());
+	}
+	
+	public static void example() {
+		System.out.println();
 	}
 }

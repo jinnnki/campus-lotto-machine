@@ -39,6 +39,5 @@ public class AppService {
 				System.out.println(e.getMessage());
 			}
 		}
-
 	}
 }
